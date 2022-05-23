@@ -7,7 +7,9 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/server.js",
+    "push": "npx prisma db push",
     "migratedev": "prisma migrate dev",
+    "dev:migrate": "npx prisma migrate dev && nodemon src/server.ts",
     "dev": "nodemon src/server.ts",
     "migratetest": "dotenv -e .env.test prisma migrate dev",
     "test:e2e": "dotenv -e .env.test nodemon src/server.ts",

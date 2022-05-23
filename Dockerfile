@@ -9,4 +9,4 @@ EXPOSE 5000
 RUN npm i
 RUN npx prisma generate
 
-CMD ["npx", "ts-node", "server.ts"]
+CMD ["npm", "run", "dev:migrate"]
