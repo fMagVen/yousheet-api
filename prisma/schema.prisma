@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id           Int            @id @default(autoincrement())
+  nickname     String         @unique
+  email        String         @unique
+  password     String
+  diaryEntires diaryEntries[]
+  skills       skills[]
+  todos        todos[]
+  dailies      dailies[]
+}
+
+model diaryEntries {
+  id     Int      @id @default(autoincrement())
+  user   users    @relation(fields: [userId], references: [id])
+  userId Int
+  day    DateTime @unique @default(now())
+  text   String   @default("empty entry")
+}
+
+model skills {
+  id           Int      @id @default(autoincrement())
+  user         users    @relation(fields: [userId], references: [id])
+  userId       Int
+  title        String   @default("new skill")
+  text         String   @default("empty entry")
+  lastModified DateTime @default(now())
+}
+
+// priority model
+// 1 - FORGETTABLE
+// 2 - LOW
+// 3 - MEDIUM
+// 4 - HIGH
+// 5 - IMMEDIATELY
+
+model todos {
+  id        Int       @id @default(autoincrement())
+  user      users     @relation(fields: [userId], references: [id])
+  userId    Int
+  name      String    @default("new todo")
+  priority  Int       @default(3)
+  dateAdded DateTime  @default(now())
+  dateDue   DateTime?
+  dateDone  DateTime?
+}
+
+model dailies {
+  id         Int          @id @default(autoincrement())
+  user       users        @relation(fields: [userId], references: [id])
+  userId     Int
+  name       String       @default("new daily")
+  checked    Boolean      @default(false)
+  streak     Int          @default(0)
+  active     Boolean
+  dateAdded  DateTime     @default(now())
+  checklists checklists[]
+}
+
+model checklists {
+  id      Int     @id @default(autoincrement())
+  daily   dailies @relation(fields: [dailyId], references: [id])
+  dailyId Int
+  name    String  @default("new check entry")
+  checked Boolean @default(false)
+}

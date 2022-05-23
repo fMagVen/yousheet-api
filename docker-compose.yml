@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  db:
+    image: postgres
+    container_name: db
+    restart: always
+    ports:
+      - 2345:5432
+    env_file:
+      - .env
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+  node_app:
+    container_name: node_app
+    build: .
+    ports:
+      - 5000:5000
+    env_file:
+      - .env
+    depends_on: db
+    volumes:
+      - . :/usr/yousheet
+      - /usr/yousheet/node_modules
+
+volumes:
+  postgres:
