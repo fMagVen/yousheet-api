@@ -5,6 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
     "migratedev": "prisma migrate dev",
     "dev": "nodemon src/server.ts",
     "migratetest": "dotenv -e .env.test prisma migrate dev",
